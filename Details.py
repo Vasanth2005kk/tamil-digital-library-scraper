@@ -48,8 +48,14 @@ def get_book_details(book_url, s_no):
                 publisher_names = ", ".join([link.get_text(strip=True) for link in publisher_links])
 
         # 4. Extract Year
-        year_tag = book_details.find("p", itemprop="name")
-        year = year_tag.get_text(strip=True) if year_tag else None
+        # d-flex flex-wrap mb-3
+        year  = None
+        year_tag = book_details.find_all("div", class_="d-flex flex-wrap mb-3")
+        if year_tag:
+            # print(f"Year Tag Found: {year_tag}")
+            year = year_tag[2].find('p', class_="fs-6 mb-0")
+            if year:
+                year = year.get_text(strip=True)
 
         # 5. Extract Location
         location_tags = book_details.find_all("p", class_="fs-6 mb-0")
